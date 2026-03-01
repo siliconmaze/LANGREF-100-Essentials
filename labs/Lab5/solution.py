@@ -70,7 +70,7 @@ def main():
     app = graph.compile(checkpointer=checkpointer)
     
     # Test with config
-    config = {"configurable": {"thread_id": f"test-{uuid.uuid4().hex[:8]"}}
+    config = {"configurable": {"thread_id": f"test-{uuid.uuid4().hex[:8]}"}}
     
     print("\n[1] Testing normal flow...")
     result = app.invoke({"data": "test", "status": "", "error": ""}, config)
