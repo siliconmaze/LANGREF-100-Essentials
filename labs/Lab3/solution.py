@@ -12,6 +12,18 @@ class GradeState(TypedDict):
     grade: str
     feedback: str
 
+def classifier(state: GradeState) -> str:
+    """Route to the appropriate grade node."""
+    score = state["score"]
+    if score >= 90:
+        return "grade_a"
+    elif score >= 80:
+        return "grade_b"
+    elif score >= 70:
+        return "grade_c"
+    else:
+        return "grade_f"
+
 def grade_a(state: GradeState) -> GradeState:
     return {"grade": "A", "feedback": "Excellent work!"}
 
@@ -23,17 +35,6 @@ def grade_c(state: GradeState) -> GradeState:
 
 def grade_f(state: GradeState) -> GradeState:
     return {"grade": "F", "feedback": "Needs improvement."}
-
-def classify_grade(state: GradeState) -> str:
-    score = state["score"]
-    if score >= 90:
-        return "grade_a"
-    elif score >= 80:
-        return "grade_b"
-    elif score >= 70:
-        return "grade_c"
-    else:
-        return "grade_f"
 
 def main():
     print("=" * 50)
@@ -47,18 +48,20 @@ def main():
         # Build fresh graph for each test
         graph = StateGraph(GradeState)
         
+        # Add all nodes
+        graph.add_node("classifier", lambda s: s)  # Pass-through
         graph.add_node("grade_a", grade_a)
         graph.add_node("grade_b", grade_b)
         graph.add_node("grade_c", grade_c)
         graph.add_node("grade_f", grade_f)
         
-        # Direct entry to each grade node based on classification
-        graph.set_entry_point("grade_a")
+        # Entry point
+        graph.set_entry_point("classifier")
         
-        # Add conditional edges - route directly to appropriate grade
+        # Conditional edge from classifier
         graph.add_conditional_edges(
-            "grade_a",
-            classify_grade,
+            "classifier",
+            classifier,
             {
                 "grade_a": "grade_a",
                 "grade_b": "grade_b", 
