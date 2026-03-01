@@ -52,9 +52,10 @@ def main():
         graph.add_node("grade_c", grade_c)
         graph.add_node("grade_f", grade_f)
         
+        # Direct entry to each grade node based on classification
         graph.set_entry_point("grade_a")
         
-        # Add conditional edges from grade_a (all routes go through classifier)
+        # Add conditional edges - route directly to appropriate grade
         graph.add_conditional_edges(
             "grade_a",
             classify_grade,
