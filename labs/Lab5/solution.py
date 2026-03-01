@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 """
 Lab 5 Solution: Production Patterns
-===================================
+=================================
 """
 
 import logging
 import os
+import uuid
 from typing import TypedDict
 from langgraph.graph import StateGraph, END
 from langgraph.checkpoint.memory import MemorySaver
@@ -68,14 +69,12 @@ def main():
     
     app = graph.compile(checkpointer=checkpointer)
     
-    # Test normal flow
-    print("\n[1] Testing normal flow...")
-    result = app.invoke({"data": "test", "status": "", "error": ""})
-    print(f"Result: {result}")
+    # Test with config
+    config = {"configurable": {"thread_id": f"test-{uuid.uuid4().hex[:8]"}}
     
-    # Test error handling
-    print("\n[2] Testing error handling (simulated)...")
-    # In real scenario, would test with failing API
+    print("\n[1] Testing normal flow...")
+    result = app.invoke({"data": "test", "status": "", "error": ""}, config)
+    print(f"Result: {result}")
     
     print("\n✓ Lab 5 Complete!")
     print("\nProduction readiness checklist:")
