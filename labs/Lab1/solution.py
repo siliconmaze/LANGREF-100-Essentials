@@ -26,7 +26,7 @@ def main():
     
     try:
         import langgraph
-        print(f"    LangGraph: {langgraph.__version__}")
+        print(f"    LangGraph: installed")
     except ImportError as e:
         print(f"    ✗ LangGraph import failed: {e}")
         return False
